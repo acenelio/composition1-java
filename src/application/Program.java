@@ -1,8 +1,8 @@
 package application;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -17,7 +17,6 @@ public class Program {
 
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		System.out.print("Enter department's name: ");
 		String departmentName = sc.nextLine();
@@ -36,7 +35,8 @@ public class Program {
 		for (int i=1; i<=n; i++) {
 			System.out.println("Enter contract #" + i + " data:");
 			System.out.print("Date (DD/MM/YYYY): ");
-			Date contractDate = sdf.parse(sc.next());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate contractDate = LocalDate.parse(sc.next(),formatter);
 			System.out.print("Value per hour: ");
 			double valuePerHour = sc.nextDouble();
 			System.out.print("Duration (hours): ");
@@ -47,12 +47,12 @@ public class Program {
 		
 		System.out.println();
 		System.out.print("Enter month and year to calculate income (MM/YYYY): ");
-		String monthAndYear = sc.next();
-		int month = Integer.parseInt(monthAndYear.substring(0, 2));
-		int year = Integer.parseInt(monthAndYear.substring(3));
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String date = "01/" + sc.next();
+		LocalDate income_Date = LocalDate.parse(date,formatter2);;
 		System.out.println("Name: " + worker.getName());
 		System.out.println("Department: " + worker.getDepartment().getName());
-		System.out.println("Income for " + monthAndYear + ": " + String.format("%.2f", worker.income(year, month)));
+		System.out.println("Income for " + "0"+ income_Date.getMonthValue() + ": " + String.format("%.2f", worker.income(income_Date.getYear(), income_Date.getMonthValue())));
 		
 		sc.close();
 	}
